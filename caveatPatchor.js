@@ -16,13 +16,12 @@ var displayAvatars = false;
 var displayCloudAppImages = true;
 var formatNagiosMessages = true;
 
-
 /* 
   Format nagios messages appropriately based on what's going on
 */
 
-if (formatNagiosMessages) {
 
+if (formatNagiosMessages) {
   Object.extend(Campfire.Message.prototype, {
     toNagios: function() {
       if (this.actsLikeTextMessage()) {
@@ -80,6 +79,7 @@ if (formatNagiosMessages) {
     initialize: function(chat) {
       this.chat = chat;
 
+			document.createStyleSheet('https://raw.github.com/bigcartel/nagios-campfire-propane/master/nagios.css');
       var messages = this.chat.transcript.messages;
       for (var i = 0; i < messages.length; i++) {
         var message = messages[i];

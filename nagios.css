@@ -1,10 +1,10 @@
-.nagios_subject {
+div.nagios_subject {
   font-weight: bold;
 }
 
-.nagios_message {
+div.nagios_message {
 }
-.nagios_time {
+div.nagios_time {
   font-size: 0.9em;
   padding-left: 1em;
   font-style: italic;
