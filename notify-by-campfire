@@ -1,0 +1,144 @@
+#!/usr/bin/env ruby
+require 'rubygems'
+require 'optparse'
+require 'tinder'
+
+# Borrowed and slightly modified from https://github.com/Sirupsen/time-ago-in-words
+class Time
+  module Units
+    Second     = 1
+    Minute     = Second  * 60
+    Hour       = Minute  * 60
+    Day        = Hour    * 24
+    Week       = Day     * 7
+    Month      = Week    * 4
+    Year       = Day     * 365
+    Decade     = Year    * 10
+    Century    = Decade  * 10
+    Millennium = Century * 10
+    Eon        = 1.0/0
+  end
+
+  def duration
+    time_difference = Time.now.to_i - self.to_i
+    return 'rtfn' if time_difference == 0
+    future = false
+    if time_difference < 0
+      future = true
+      time_difference *= -1
+    end
+    unit = get_unit(time_difference)
+    unit_difference = time_difference / Units.const_get(unit.capitalize)
+
+    unit = unit.to_s.downcase + ('s' if time_difference > 1)
+
+    future ? "#{unit_difference} more #{unit}" : "#{unit_difference} #{unit}"
+  end
+
+  private
+
+  def get_unit(time_difference)
+    Units.constants.each_cons(2) do |con|
+      return con.first if (Units.const_get(con[0])...Units.const_get(con[1])) === time_difference
+    end
+  end
+end
+
+def parse_notification(str)
+  h = Hash.new
+  str.each_line do |line|
+    if line =~ /^([^:]+):(.*)$/
+      h[$1] = $2.strip
+    end
+  end
+  if h.has_key?('service')
+    {
+      :code => $status_codes[h['state']],
+      :since => (Time.new - h['duration'].to_i).duration,
+      :number => h['number'],
+      :subject => "#{h['service']} on #{h['host']}",
+      :message => h['info']
+    }
+  else
+    {
+      :code => $status_codes[h['state']],
+      :since => (Time.new - h['duration'].to_i).duration,
+      :number => h['number'],
+      :subject => "#{h['host']} (#{h['address']})",
+      :message => h['info']
+    }
+  end
+end
+
+$status_codes = {
+  'OK' => 0,
+  'UP' => 0,
+  'WARNING' => 1,
+  'DOWN' => 2,
+  'CRITICAL' => 2,
+  'UNKNOWN' => 3,
+}
+$status_codes.default = 3
+
+options = { 
+  :subdomain => nil,
+  :token => nil,
+  :room => 'Alerts'
+}
+
+optparse = OptionParser.new do |o| 
+  o.banner = "Usage: printf \"%b\" \"<message>\" #{File.basename($0)}"
+
+  o.on("-r", "--room ROOM", String, "Campfire room (default: #{options[:room]})") do |s|
+    options[:room] = s
+  end
+
+  o.on("-s", "--subdomain SUBDOMAIN", String, "Campfire sub-domain") do |s|
+    options[:subdomain] = s
+  end
+
+  o.on("-t", "--token TOKEN", String, "Campfire API token") do |s|
+    options[:token] = s
+  end
+
+  o.separator ""
+
+  o.on_tail('-h', '--help', 'Display this help screen') do
+    puts o
+    exit 1
+  end 
+end
+
+optparse.parse!
+
+if options[:subdomain].nil?
+  $stderr.puts "You must specify a sub-domain"
+  exit!
+elsif options[:token].nil?
+  $stderr.puts "You must specify an API token"
+  exit!
+end
+
+# This is used to test out the compfire interactions
+notification = <<EOF
+type:PROBLEM
+service:Test Service
+host:testhost
+address:127.0.0.1
+state:CRITICAL
+duration:0
+number:28
+info:CRITICAL: Test service is critical!
+EOF
+
+# Comment this line out in order to set a test notification
+#notification = ARGF.read
+
+campfire = Tinder::Campfire.new options[:subdomain], :token => options[:token], :ssl_options => {:verify => false}
+room = campfire.find_room_by_name(options[:room])
+begin
+  data = parse_notification(notification)
+  room.speak "$NAGIOS$|notification|#{data[:code]}|#{data[:since]}|#{data[:number]}|#{data[:subject]}|#{data[:message]}"
+rescue
+  room.speak "$NAGIOS$|notification|3|0|0|Notify By Campfire|You've managed to bungle your campfire plugin. Go fix it! (#{$!.to_s})"
+end
