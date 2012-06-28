@@ -1,0 +1,15 @@
+.nagios_subject {
+  font-weight: bold;
+}
+
+.nagios_message {
+}
+.nagios_time {
+  font-size: 0.9em;
+  padding-left: 1em;
+  font-style: italic;
+}
+.nagios_ok { background-color: #dfd; }
+.nagios_warning { background-color: #ffd; }
+.nagios_critical { background-color: #fdd; }
+.nagios_unknown { background-color: #def; }
