@@ -132,7 +132,7 @@ info:CRITICAL: Test service is critical!
 EOF
 
 # Comment this line out in order to set a test notification
-#notification = ARGF.read
+notification = ARGF.read
 
 campfire = Tinder::Campfire.new options[:subdomain], :token => options[:token], :ssl_options => {:verify => false}
 room = campfire.find_room_by_name(options[:room])
