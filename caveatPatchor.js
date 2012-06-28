@@ -41,22 +41,19 @@ if (formatNagiosMessages) {
 
 					if (data[1] == 'notification' && data.length == 7) {
 	        	if (data[2] == '0') {
-							var url = 'http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Ok.png', alt = 'Ok';
-							this.bodyElement().parentNode.className += ' nagios_ok';
+							var state = 'ok';
 						} else if (data[2] == '1') {
-							var url = 'http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Warning.png', alt = 'Warning';
-							this.bodyElement().parentNode.className += ' nagios_warning';
+							var state = 'warning';
 						} else if (data[2] == '2') {
-							var url = 'http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Danger.png', alt = 'Critical';
-							this.bodyElement().parentNode.className += ' nagios_critical';
+							var state = 'critical';
 						} else {
-							var url = 'http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Help.png', alt = 'Unknown';
-							this.bodyElement().parentNode.className += ' nagios_unknown';
+							var state = 'unknown';
 						}
-						var author_html = '<img alt="'+alt+'" width="32" height="32" align="top" style="opacity: 1.0; margin-left: 5px; border-radius:3px" src="'+url+'"/>';
+						this.bodyElement().parentNode.className += ' nagios_' + state;
+						var author_html = '<div class="nagios_icon '+state+'"></div>';
 						var body_html = '<div class="nagios_subject">'+data[5]+' ('+data[4]+')</div><div class="nagios_message">'+data[6]+'</div><div class="nagios_time">- '+data[3]+'</div>';
 					} else if (data[1] == 'summary') {
-						var author_html = '<img alt="Information" width="32" height="32" align="top" style="opacity: 1.0; margin-left: 5px; border-radius:3px" src="http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Diagram.png"/>';
+						var author_html = '<div class="nagios_icon summary"></div>';
 					}
 					if (author_html) { author.update(author_html); }
 					if (body_html) { body.update(body_html); }
@@ -79,7 +76,6 @@ if (formatNagiosMessages) {
     initialize: function(chat) {
       this.chat = chat;
 
-			document.createStyleSheet('https://raw.github.com/bigcartel/nagios-campfire-propane/master/nagios.css');
       var messages = this.chat.transcript.messages;
       for (var i = 0; i < messages.length; i++) {
         var message = messages[i];

@@ -1,15 +1,41 @@
-div.nagios_subject {
+
+/* Styling for the nagios message formatter */
+
+.nagios_subject {
   font-weight: bold;
 }
 
-div.nagios_message {
-}
-div.nagios_time {
+.nagios_message {}
+
+.nagios_time {
   font-size: 0.9em;
-  padding-left: 1em;
+  padding-left: 0.5em;
   font-style: italic;
 }
 .nagios_ok { background-color: #dfd; }
 .nagios_warning { background-color: #ffd; }
 .nagios_critical { background-color: #fdd; }
 .nagios_unknown { background-color: #def; }
+
+.nagios_icon {
+  display: block;
+  width: 32px;
+  height: 32px;
+  margin-left: 5px;
+}
+
+.nagios_icon.ok {
+  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Ok.png);
+}
+.nagios_icon.warning {
+  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Warning.png);
+}
+.nagios_icon.critical {
+  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Danger.png);
+}
+.nagios_icon.unknown {
+  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Help.png);
+}
+.nagios_icon.summary {
+  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Diagram.png);
+}
