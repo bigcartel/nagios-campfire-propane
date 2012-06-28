@@ -25,17 +25,17 @@
 }
 
 .nagios_icon.ok {
-  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Ok.png);
+  background-image: url(https://github.com/bigcartel/nagios-campfire-propane/raw/master/images/ok.png);
 }
 .nagios_icon.warning {
-  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Warning.png);
+  background-image: url(https://github.com/bigcartel/nagios-campfire-propane/raw/master/images/warning.png);
 }
 .nagios_icon.critical {
-  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Danger.png);
+  background-image: url(https://github.com/bigcartel/nagios-campfire-propane/raw/master/images/critical.png);
 }
 .nagios_icon.unknown {
-  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Help.png);
+  background-image: url(https://github.com/bigcartel/nagios-campfire-propane/raw/master/images/unknown.png);
 }
 .nagios_icon.summary {
-  background-image: url(http://files.softicons.com/download/application-icons/32x32-free-design-icons-by-aha-soft/png/32/Diagram.png);
+  background-image: url(https://github.com/bigcartel/nagios-campfire-propane/raw/master/images/summary.png);
 }
