@@ -10,7 +10,7 @@ Install the Propane javascript and stylesheets by going to a terminal as your no
 
     curl https://raw.github.com/bigcartel/nagios-campfire-propane/master/install.sh | bash
 
-Install the 'tinder' gem:
+Install the 'tinder' gem on your nagios server:
 
     gem install tinder
 
