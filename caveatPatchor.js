@@ -39,7 +39,7 @@ if (formatNagiosMessages) {
 					// Always show the author for our iconography
 					author.show();
 
-					if (data[1] == 'notification' && data.length == 7) {
+					if (data[1] == 'notification' && data.length >= 7 && data.length <= 8) {
 	        	if (data[2] == '0') {
 							var state = 'ok';
 						} else if (data[2] == '1') {
@@ -51,7 +51,8 @@ if (formatNagiosMessages) {
 						}
 						this.bodyElement().parentNode.className += ' nagios_' + state;
 						var author_html = '<div class="nagios_icon '+state+'"></div>';
-						var body_html = '<div class="nagios_subject">'+data[5]+' ('+data[4]+')</div><div class="nagios_message">'+data[6]+'</div><div class="nagios_time">- '+data[3]+'</div>';
+						var subject = data[7] ? '<a href="'+unescape(data[7])+'" target="_blank">'+data[5]+'</a>' : data[5];
+						var body_html = '<div class="nagios_subject">'+subject+' ('+data[4]+')</div><div class="nagios_message">'+data[6]+'</div><div class="nagios_time">- '+data[3]+'</div>';
 					} else if (data[1] == 'summary') {
 						var author_html = '<div class="nagios_icon summary"></div>';
 					}
